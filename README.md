@@ -5,4 +5,8 @@ This extension app adds slash command genie to Rocket.Chat allowing to execute o
 
 Lists the open alerts.
 
+## /genie get [tinyID]
+
+Gets corresponding alert.
+
 
