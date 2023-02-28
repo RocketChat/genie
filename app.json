@@ -1,0 +1,30 @@
+{
+    "id": "4edcbd4e-57e0-449e-b667-4311481c3cc0",
+    "version": "0.0.1",
+    "requiredApiVersion": "^1.19.0",
+    "iconFile": "icon.png",
+    "author": {
+        "name": "Rui Fernandes",
+        "homepage": "rocket.chat",
+        "support": "rocket.chat"
+    },
+    "name": "Genie",
+    "nameSlug": "genie",
+    "classFile": "GenieApp.ts",
+    "description": "Slash command for integrating with Opsgenie",
+    "permissions": [
+        {
+            "name": "slashcommand"
+        },
+        {
+            "name": "message.write"
+        },
+        {
+            "name": "networking"
+        },
+        {
+            "name": "room.read"
+        }
+    ],
+    "implements": []
+}
