@@ -49,6 +49,16 @@ export class GennieCommand implements ISlashCommand {
                 headers: apiHeaders
             });
             this.processResponse(response,context,modify,read,notifyOnly);
+        } else if(subCmd === 'get'){
+            //get alert
+            if(cmdParams.length===1){
+                this.notifyMessage(context,modify,'Missing alert id');
+            }
+            url = url + 'alerts?query=tinyId%3A'+cmdParams[1];
+            response = await http.get(url, {
+                headers: apiHeaders
+            });
+            this.processResponse(response,context,modify,read,notifyOnly);
         } else {
             this.notifyMessage(context,modify,'Could not identify subcommand: `'+cmdParams.join(" ")+'`');
         }
