@@ -45,31 +45,36 @@ export class GennieCommand implements ISlashCommand {
         if (subCmd === 'list' && cmdParams.length === 1) {
             //list open alerts
             url = url + 'alerts?query=status%3Aopen&offset=0&limit=100&sort=createdAt&order=desc';
-            response = await http.get(url, {
-                headers: apiHeaders
-            });
-            this.processResponse(response,context,modify,read,notifyOnly);
-        } else if(subCmd === 'get'){
+            this.processGet('List Alerts',http, apiHeaders, url, context, modify, read, notifyOnly);
+        } else if (subCmd === 'list' && cmdParams[1] === 'teams') {
+            //list teams
+            url = url + 'teams';
+            this.processGet('List Teams',http, apiHeaders, url, context, modify, read, notifyOnly);
+        } else if (subCmd === 'get') {
             //get alert
-            if(cmdParams.length===1){
-                this.notifyMessage(context,modify,'Missing alert id');
+            if (cmdParams.length === 1) {
+                this.notifyMessage(context, modify, 'Missing alert id');
             }
-            url = url + 'alerts?query=tinyId%3A'+cmdParams[1];
-            response = await http.get(url, {
-                headers: apiHeaders
-            });
-            this.processResponse(response,context,modify,read,notifyOnly);
+            url = url + 'alerts?query=tinyId%3A' + cmdParams[1];
+            this.processGet('Get Alert '+cmdParams[1],http, apiHeaders, url, context, modify, read, notifyOnly);
         } else {
-            this.notifyMessage(context,modify,'Could not identify subcommand: `'+cmdParams.join(" ")+'`');
+            this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
     }
+    private async processGet(headLine: string,http: IHttp, apiHeaders: any, url: string, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
+        let response = await http.get(url, {
+            headers: apiHeaders
+        });
+        this.processResponse(headLine,response, context, modify, read, notifyOnly);
+    }
 
-    private formatMessage(responseContent: any|undefined) {
-        if(responseContent){
-            return '```\n' + JSON.stringify(JSON.parse(''+responseContent), null, 2) + '\n```'
-        }else{
-            return "{}";
+
+    private formatMessage(headLine:string,responseContent: any | undefined) {
+        if (responseContent) {
+            return '*'+headLine+'*:\n```\n' + JSON.stringify(JSON.parse('' + responseContent), null, 2) + '\n```'
+        } else {
+            return '*'+headLine+'*:\n```\n{}\n```';
         }
     }
 
@@ -87,11 +92,11 @@ export class GennieCommand implements ISlashCommand {
         return { 'Authorization': 'GenieKey ' + apiKey };
     }
 
-    private async processResponse(response: IHttpResponse, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
+    private async processResponse(headLine:string,response: IHttpResponse, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
         if (response.statusCode != 200) {
             return await this.notifyMessage(context, modify, '*Error calling HTTP:*\n```\n' + response.content + "\n```");
         }
-        let responseMsg=this.formatMessage(response.content);
+        let responseMsg = this.formatMessage(headLine,response.content);
         if (notifyOnly) {
             this.notifyMessage(context, modify, responseMsg);
         } else {

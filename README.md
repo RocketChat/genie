@@ -9,4 +9,6 @@ Lists the open alerts.
 
 Gets corresponding alert.
 
+## /genie list teams
 
+List teams.
