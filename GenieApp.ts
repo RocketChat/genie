@@ -28,6 +28,17 @@ export class GenieApp extends App {
         });
 
         await configuration.settings.provideSetting({
+            id: 'opsgenie_api_integration_key',
+            type: SettingType.STRING,
+            packageValue: 'XXX-YYYY-ZZZ-WWWW-VVVV',
+            required: true,
+            public: false,
+            multiline: false,
+            i18nLabel: 'opsgenie_api_integration_key',
+            i18nDescription: 'opsgenie_api_integration_key_desc',
+        });
+
+        await configuration.settings.provideSetting({
             id: 'opsgenie_notify_only',
             type: SettingType.BOOLEAN,
             packageValue: true,

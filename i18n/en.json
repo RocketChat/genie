@@ -2,5 +2,7 @@
     "opsgenie_api_key": "API Key",
     "opsgenie_api_key_desc": "The API Key for Opsgenie integration",
     "opsgenie_notify_only": "Notify Only",
-    "opsgenie_notify_only_desc": "If disabled the message will be written to the channel"
+    "opsgenie_notify_only_desc": "If disabled the message will be written to the channel",
+    "opsgenie_api_integration_key": "API Integration Key",
+    "opsgenie_api_integration_key_desc": "The API Integration Key for Opsgenie integration (required for creating alerts)"
 }
