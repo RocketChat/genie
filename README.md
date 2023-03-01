@@ -1,6 +1,11 @@
 # genie slash command
 This extension app adds slash command genie to Rocket.Chat allowing to execute operations on the integrate Opsgenie.
 
+It has 3 settings:
+- API Key: The API Key for calling Opsgenie REST API.
+- API Integration Key: The API Integration Key for Alerts REST API.
+- Notify Only: In case you disable the responses are posted to the channel.
+
 ## /genie list
 
 Lists the open alerts.
