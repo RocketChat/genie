@@ -27,4 +27,6 @@ It will assign the alert to the user.
 
 Aknowledges corresponding alerts.
 
+## /genie close [tinyID tinyID2..]
 
+Closes corresponding alerts
