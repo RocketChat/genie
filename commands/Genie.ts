@@ -76,10 +76,41 @@ export class GennieCommand implements ISlashCommand {
                 content: JSON.stringify(alertPayload)
             });
             this.processResponse('Alert Created',response, context, modify, read, notifyOnly);
+        } else if (subCmd === 'assign') {
+            //asign alerts
+            if(cmdParams.length<4){
+                return this.notifyMessage(context, modify, 'Assign subcommand misisng information.');
+            }
+            const userToAssign = this.getUserToAssign(cmdParams);
+            if(userToAssign===''){
+                return this.notifyMessage(context, modify, 'State user to assign alerts after `to` keyword.');
+            }
+            let assigneePayload = {
+                owner: {username: userToAssign}
+            };
+            for (let i = 1; i < cmdParams.length; ++i) {
+                if(cmdParams[i]=='to'){
+                    break;
+                }
+                let urlCall=url+ 'alerts/'+cmdParams[i]+'/assign?identifierType=tiny';
+                let response = await http.post(urlCall, {
+                    headers: apiIntegrationHeaders,
+                    content: JSON.stringify(assigneePayload)
+                });
+                this.processResponse('Alert Assigned '+cmdParams[i]+' to '+userToAssign,response, context, modify, read, notifyOnly);
+            }
         } else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
+    }
+    getUserToAssign(cmdParams: string[]) {
+        for (let i = 1; i < cmdParams.length; ++i) {
+            if(cmdParams[i]=='to'&&i+1<cmdParams.length){
+                return cmdParams[i+1];
+            }
+        }
+        return '';
     }
     getAlertUsersTeams(alertPayload: any,cmdParams: string[]) {
         let startUser=false;
