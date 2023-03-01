@@ -71,11 +71,7 @@ export class GennieCommand implements ISlashCommand {
             //just to see the payload is right even if responders ignored if you are using essentials subscription
             console.log(JSON.stringify(alertPayload));
             url = url + 'alerts';
-            let response = await http.post(url, {
-                headers: apiIntegrationHeaders,
-                content: JSON.stringify(alertPayload)
-            });
-            this.processResponse('Alert Created',response, context, modify, read, notifyOnly);
+            this.processPost('Alert Created',apiIntegrationHeaders,url,alertPayload,http,context,modify,read,notifyOnly);
         } else if (subCmd === 'assign') {
             //asign alerts
             if(cmdParams.length<4){
@@ -92,17 +88,21 @@ export class GennieCommand implements ISlashCommand {
                 if(cmdParams[i]=='to'){
                     break;
                 }
+                console.log(JSON.stringify(assigneePayload));
                 let urlCall=url+ 'alerts/'+cmdParams[i]+'/assign?identifierType=tiny';
-                let response = await http.post(urlCall, {
-                    headers: apiIntegrationHeaders,
-                    content: JSON.stringify(assigneePayload)
-                });
-                this.processResponse('Alert Assigned '+cmdParams[i]+' to '+userToAssign,response, context, modify, read, notifyOnly);
+                this.processPost('Alert Assigned '+cmdParams[i]+' to '+userToAssign,apiIntegrationHeaders,urlCall,assigneePayload,http,context,modify,read,notifyOnly);
             }
         } else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
+    }
+    async processPost(headLine: string,apiHeaders: any, url: string, payload: any, http: IHttp, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
+        let response = await http.post(url, {
+            headers: apiHeaders,
+            content: JSON.stringify(payload)
+        });
+        this.processResponse(headLine,response, context, modify, read, notifyOnly);
     }
     getUserToAssign(cmdParams: string[]) {
         for (let i = 1; i < cmdParams.length; ++i) {
