@@ -22,3 +22,9 @@ Create alert with specified message and including list of teams and users as res
 
 It will assign the alert to the user.
 (Pay attention this will be ignored if you are using an Essentials subscription. So untested yet.)
+
+## /genie ack [tinyID tinyID2..]
+
+Aknowledges corresponding alerts.
+
+

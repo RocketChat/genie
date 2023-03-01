@@ -75,7 +75,7 @@ export class GennieCommand implements ISlashCommand {
         } else if (subCmd === 'assign') {
             //asign alerts
             if(cmdParams.length<4){
-                return this.notifyMessage(context, modify, 'Assign subcommand misisng information.');
+                return this.notifyMessage(context, modify, 'Assign subcommand missing information.');
             }
             const userToAssign = this.getUserToAssign(cmdParams);
             if(userToAssign===''){
@@ -91,6 +91,15 @@ export class GennieCommand implements ISlashCommand {
                 console.log(JSON.stringify(assigneePayload));
                 let urlCall=url+ 'alerts/'+cmdParams[i]+'/assign?identifierType=tiny';
                 this.processPost('Alert Assigned '+cmdParams[i]+' to '+userToAssign,apiIntegrationHeaders,urlCall,assigneePayload,http,context,modify,read,notifyOnly);
+            }
+        } else if (subCmd === 'ack') {
+            //aknowledge alert
+            if(cmdParams.length<2){
+                return this.notifyMessage(context, modify, 'Aknowledge subcommand missing alerts.');
+            }
+            for (let i = 1; i < cmdParams.length; ++i) {
+                let urlCall=url+ 'alerts/'+cmdParams[i]+'/acknowledge?identifierType=tiny';
+                this.processPost('Alert Aknowledged '+cmdParams[i],apiIntegrationHeaders,urlCall,{},http,context,modify,read,notifyOnly);
             }
         } else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
