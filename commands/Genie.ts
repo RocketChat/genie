@@ -34,7 +34,7 @@ export class GennieCommand implements ISlashCommand {
         const cmdParams = context.getArguments();
         let apiHeaders = this.buildHeader(apiKey);
         let apiIntegrationHeaders = this.buildHeader(apiIntegrationKey);
-        let url = 'https://api.opsgenie.com/v2/';
+        let url = await read.getEnvironmentReader().getSettings().getValueById('opsgenie_api_url');
 
         if (!cmdParams || cmdParams.length === 0) {
             return this.notifyMessage(context, modify, "Subcommand required");

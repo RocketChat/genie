@@ -16,6 +16,18 @@ export class GenieApp extends App {
     public async extendConfiguration(
         configuration: IConfigurationExtend
       ): Promise<void> {
+
+        await configuration.settings.provideSetting({
+            id: 'opsgenie_api_url',
+            type: SettingType.STRING,
+            packageValue: 'https://api.opsgenie.com/v2/',
+            required: true,
+            public: false,
+            multiline: false,
+            i18nLabel: 'opsgenie_api_url',
+            i18nDescription: 'opsgenie_api_url_desc',
+        });
+
         await configuration.settings.provideSetting({
             id: 'opsgenie_api_key',
             type: SettingType.STRING,
