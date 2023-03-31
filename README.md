@@ -7,6 +7,18 @@ It has 4 settings:
 - API Integration Key: The API Integration Key for Alerts REST API.
 - Notify Only: In case you disable the responses are posted to the channel.
 
+## /genie ack [tinyID tinyID2..]
+
+Aknowledges corresponding alerts.
+
+## /genie close [tinyID tinyID2..]
+
+Closes corresponding alerts
+
+## /genie note [note] to [tinyID tinyID2..]
+
+Add note to alert.
+
 ## /genie list
 
 Lists the open alerts.
@@ -28,11 +40,3 @@ Create alert with specified message and including list of teams and users as res
 
 It will assign the alert to the user.
 (Pay attention this will be ignored if you are using an Essentials subscription. So untested yet.)
-
-## /genie ack [tinyID tinyID2..]
-
-Aknowledges corresponding alerts.
-
-## /genie close [tinyID tinyID2..]
-
-Closes corresponding alerts

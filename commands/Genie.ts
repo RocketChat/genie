@@ -68,8 +68,6 @@ export class GennieCommand implements ISlashCommand {
                 responders: []
             }
             alertPayload=this.getAlertUsersTeams(alertPayload,cmdParams);
-            //just to see the payload is right even if responders ignored if you are using essentials subscription
-            console.log(JSON.stringify(alertPayload));
             url = url + 'alerts';
             this.processPost('Alert Created',apiIntegrationHeaders,url,alertPayload,http,context,modify,read,notifyOnly);
         } else if (subCmd === 'assign') {
@@ -88,7 +86,6 @@ export class GennieCommand implements ISlashCommand {
                 if(cmdParams[i]=='to'){
                     break;
                 }
-                console.log(JSON.stringify(assigneePayload));
                 let urlCall=url+ 'alerts/'+cmdParams[i]+'/assign?identifierType=tiny';
                 this.processPost('Alert Assigned '+cmdParams[i]+' to '+userToAssign,apiIntegrationHeaders,urlCall,assigneePayload,http,context,modify,read,notifyOnly);
             }
@@ -110,7 +107,22 @@ export class GennieCommand implements ISlashCommand {
                 let urlCall=url+ 'alerts/'+cmdParams[i]+'/close?identifierType=tiny';
                 this.processPost('Alert Closed '+cmdParams[i],apiIntegrationHeaders,urlCall,{},http,context,modify,read,notifyOnly);
             }
-        } else {
+        } else if (subCmd === 'note') {
+            //add note to alerts
+            const notemsg = this.getNoteMsg(cmdParams);
+            if(notemsg===''){
+                return this.notifyMessage(context, modify, 'State note before `to` keyword.');
+            }
+            let notePayload = {
+                note: notemsg.trim()
+            }
+            let alertIds=this.getArrayAfterSeparator(cmdParams,'to');
+            for (let i = 0; i < alertIds.length; ++i) {
+                let newUrl = url + 'alerts/'+alertIds[i]+'/notes?identifierType=tiny';
+                this.processPost('Note Added to Alert '+alertIds[i],apiIntegrationHeaders,newUrl,notePayload,http,context,modify,read,notifyOnly);
+            }
+            url = url + 'alerts/';
+        }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
@@ -151,14 +163,34 @@ export class GennieCommand implements ISlashCommand {
         return alertPayload;
     }
 
-    getAlertMsg(cmdParams: string[]) {
-        let alertMsg = '';
+    getMsgFromCmd(cmdParams: string[],stringSeparator: string) {
+        let msg = '';
         for (let i = 1; i < cmdParams.length; ++i) {
-            if(cmdParams[i]=='for')
+            if(cmdParams[i]==stringSeparator)
                 break;
-            alertMsg=alertMsg+' '+cmdParams[i];
+            msg=msg+' '+cmdParams[i];
         }
-        return alertMsg;
+        return msg;
+    }
+
+    getArrayAfterSeparator(cmdParams: string[],stringSeparator: string) {
+        let arrayAfter: string[] = [];
+        for (let i = 1,isAfter=false; i < cmdParams.length; ++i) {
+            if(isAfter){
+                arrayAfter.push(cmdParams[i]);
+            }else if(cmdParams[i]==stringSeparator) {
+                isAfter =true;
+            }
+        }
+        return arrayAfter;
+    }
+
+    getNoteMsg(cmdParams: string[]) {
+        return this.getMsgFromCmd(cmdParams,'to');
+    }
+
+    getAlertMsg(cmdParams: string[]) {
+        return this.getMsgFromCmd(cmdParams,'for');
     }
 
     private async processGet(headLine: string,http: IHttp, apiHeaders: any, url: string, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
