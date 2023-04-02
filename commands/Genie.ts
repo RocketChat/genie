@@ -121,13 +121,29 @@ export class GennieCommand implements ISlashCommand {
                 let newUrl = url + 'alerts/'+alertIds[i]+'/notes?identifierType=tiny';
                 this.processPost('Note Added to Alert '+alertIds[i],apiIntegrationHeaders,newUrl,notePayload,http,context,modify,read,notifyOnly);
             }
-            url = url + 'alerts/';
+        } else if (subCmd === 'addtag') {
+            //add tags to alerts
+            const tags: string[] = this.getTagsMsg(cmdParams);
+            if(tags.length===0){
+                return this.notifyMessage(context, modify, 'State tags before `to` keyword.');
+            }
+            let tagsPayload = {
+                tags: tags
+            }
+            let alertIds=this.getArrayAfterSeparator(cmdParams,'to');
+            for (let i = 0; i < alertIds.length; ++i) {
+                let newUrl = url + 'alerts/'+alertIds[i]+'/tags?identifierType=tiny';
+                this.processPost('Tags Added to Alert '+alertIds[i],apiIntegrationHeaders,newUrl,tagsPayload,http,context,modify,read,notifyOnly);
+            }
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
     }
     async processPost(headLine: string,apiHeaders: any, url: string, payload: any, http: IHttp, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
+        //console.log(url);
+        //console.log(JSON.stringify(payload));
+
         let response = await http.post(url, {
             headers: apiHeaders,
             content: JSON.stringify(payload)
@@ -183,6 +199,11 @@ export class GennieCommand implements ISlashCommand {
             }
         }
         return arrayAfter;
+    }
+
+    getTagsMsg(cmdParams: string[]) {
+        let tagsValue=this.getMsgFromCmd(cmdParams,'to');
+        return tagsValue.split(',');
     }
 
     getNoteMsg(cmdParams: string[]) {

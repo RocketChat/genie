@@ -17,7 +17,11 @@ Closes corresponding alerts
 
 ## /genie note [note] to [tinyID tinyID2..]
 
-Add note to alert.
+Add note to alerts.
+
+## /genie addtag [tag1,tag2,..] to [tinyID tinyID2..]
+
+Add tags to alerts.
 
 ## /genie list
 
