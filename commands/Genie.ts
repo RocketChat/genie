@@ -54,6 +54,10 @@ export class GennieCommand implements ISlashCommand {
             //list integrations
             url = url + 'integrations';
             this.processGet('List Integrations',http, apiHeaders, url, context, modify, read, notifyOnly);
+        } else if (subCmd === 'list' && cmdParams[1] === 'policies') {
+            //list policies
+            url = url + 'policies/alert';
+            this.processGet('List Policies',http, apiHeaders, url, context, modify, read, notifyOnly);
         } else if (subCmd === 'get') {
             //get alert
             if (cmdParams.length === 1) {

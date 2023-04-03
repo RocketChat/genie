@@ -67,6 +67,10 @@ Lists the open alerts.
 
 List integrations.
 
+## /genie list policies
+
+List policies.
+
 ## /genie list teams
 
 List teams.
