@@ -45,6 +45,11 @@ Take ownership of alert.
 
 Update priority of alert.
 
+## /genie exec [action] on [tinyID tinyID2..]
+
+Execute action.
+(Pay attention this might be ignored if you are using an Essentials subscription. So untested yet.)
+
 ## /genie list
 
 Lists the open alerts.

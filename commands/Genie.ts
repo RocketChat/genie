@@ -198,6 +198,21 @@ export class GennieCommand implements ISlashCommand {
             };
             let urlCall=url+ 'alerts/'+alertId+'/priority?identifierType=tiny';
             this.processPost('Alert Priority for '+alertId+' Set to '+priority,apiIntegrationHeaders,urlCall,priorityPayload,http,context,modify,read,notifyOnly);
+        } else if (subCmd === 'exec') {
+            if(cmdParams.length<4){
+                return this.notifyMessage(context, modify, 'Execute action subcommand requires more arguments.');
+            }
+            let action=cmdParams[1];
+            if(cmdParams[2]!=='on'){
+                return this.notifyMessage(context, modify, 'Execute action has syntax: \`/genie exec [action] on [tinyID tinyID2..]\`');
+            }
+            let tinyIds: string[]=this.getArrayAfterSeparator(cmdParams,'on');
+
+            for(let i=0;i<tinyIds.length;i++){
+                let urlCall =url+ 'alerts/'+tinyIds[i]+'/actions/'+action+'?identifierType=tiny';
+                let actionPayload ={};
+                this.processPost('Execute Action '+action+' '+tinyIds[i],apiIntegrationHeaders,urlCall,actionPayload,http,context,modify,read,notifyOnly);
+            }
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
