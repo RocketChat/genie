@@ -75,4 +75,8 @@ List policies.
 
 List teams.
 
+## /genie enable policy/integration [name of policy/integration]
+
+Enable Integration/Policy.
+
 
