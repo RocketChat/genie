@@ -149,6 +149,20 @@ export class GennieCommand implements ISlashCommand {
                 let urlCall=url+ 'alerts/'+alertObj.tinyId+'/acknowledge?identifierType=tiny';
                 this.processPost('Alert Aknowledged '+alertObj.tinyId,apiIntegrationHeaders,urlCall,{},http,context,modify,read,notifyOnly);
             }
+        } else if (subCmd === 'closeall') {
+            if(cmdParams.length>1){
+                return this.notifyMessage(context, modify, 'Closeall subcommand does not receive arguments.');
+            }
+            let response = await this.listOpenAlerts(http, apiHeaders, url);
+            if (response.statusCode != 200&&response.statusCode != 202) {
+                return await this.notifyMessage(context, modify, '*Error calling HTTP:*\n```\n' + response.content + "\n```");
+            }
+            let responseObj = JSON.parse(''+response.content);
+            for (let i=0;responseObj.data&&i<responseObj.data.length;i++) {
+                let alertObj=responseObj.data[i];
+                let urlCall=url+ 'alerts/'+alertObj.tinyId+'/close?identifierType=tiny';
+                this.processPost('Alert Closed '+alertObj.tinyId,apiIntegrationHeaders,urlCall,{},http,context,modify,read,notifyOnly);
+            }
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }

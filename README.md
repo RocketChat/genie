@@ -27,6 +27,10 @@ Add tags to alerts.
 
 Acknowledge all open alerts.
 
+## /genie closeall
+
+Close all open alerts.
+
 ## /genie list
 
 Lists the open alerts.
