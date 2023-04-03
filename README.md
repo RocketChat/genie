@@ -31,6 +31,16 @@ Acknowledge all open alerts.
 
 Close all open alerts.
 
+## /genie assign [tinyID tinyID2..] to [user]
+
+It will assign the alert to the user.
+(Pay attention this will be ignored if you are using an Essentials subscription. So untested yet.)
+
+## /genie own [tinyID tinyID2..]
+
+Take ownership of alert.
+(Pay attention this will be ignored if you are using an Essentials subscription. So untested yet.)
+
 ## /genie list
 
 Lists the open alerts.
@@ -47,8 +57,3 @@ List teams.
 
 Create alert with specified message and including list of teams and users as responders to the alert if passed.
 (Pay attention the responders after the for keyword will be ignored if you are using an Essentials subscription. So untested yet.)
-
-## /genie assign [tinyID tinyID2..] to [user]
-
-It will assign the alert to the user.
-(Pay attention this will be ignored if you are using an Essentials subscription. So untested yet.)

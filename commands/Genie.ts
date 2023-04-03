@@ -13,7 +13,7 @@ import {
     ISlashCommand,
     SlashCommandContext
 } from '@rocket.chat/apps-engine/definition/slashcommands'
-import { IUser } from '@rocket.chat/apps-engine/definition/users'
+import { IUser, IUserEmail } from '@rocket.chat/apps-engine/definition/users'
 
 export class GennieCommand implements ISlashCommand {
     public command = 'genie'
@@ -162,6 +162,21 @@ export class GennieCommand implements ISlashCommand {
                 let alertObj=responseObj.data[i];
                 let urlCall=url+ 'alerts/'+alertObj.tinyId+'/close?identifierType=tiny';
                 this.processPost('Alert Closed '+alertObj.tinyId,apiIntegrationHeaders,urlCall,{},http,context,modify,read,notifyOnly);
+            }
+        } else if (subCmd === 'own') {
+            if(cmdParams.length<2){
+                return this.notifyMessage(context, modify, 'Own subcommand requires at least one alert (tiny) id to be passed.');
+            }
+            let userEmails: IUserEmail[]=context.getSender().emails;
+            if(!userEmails || userEmails.length==0){
+                return this.notifyMessage(context, modify, 'User has no email address to assign alerts.');
+            }
+            let assigneePayload = {
+                owner: {username: userEmails[0].address}
+            };
+            for (let i = 1; i < cmdParams.length; ++i) {
+                let urlCall=url+ 'alerts/'+cmdParams[i]+'/assign?identifierType=tiny';
+                this.processPost('Alert '+cmdParams[i]+' Assigned to '+userEmails[0].address,apiIntegrationHeaders,urlCall,assigneePayload,http,context,modify,read,notifyOnly);
             }
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
