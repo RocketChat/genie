@@ -50,19 +50,22 @@ Update priority of alert.
 Execute action.
 (Pay attention this might be ignored if you are using an Essentials subscription. So untested yet.)
 
-## /genie list
+## /genie alert [alert message] for [team1,team2,user1..]
 
-Lists the open alerts.
+Create alert with specified message and including list of teams and users as responders to the alert if passed.
+(Pay attention the responders after the for keyword will be ignored if you are using an Essentials subscription. So untested yet.)
 
 ## /genie get [tinyID]
 
 Gets corresponding alert.
 
+## /genie list
+
+Lists the open alerts.
+
+
 ## /genie list teams
 
 List teams.
 
-## /genie alert [alert message] for [team1,team2,user1..]
 
-Create alert with specified message and including list of teams and users as responders to the alert if passed.
-(Pay attention the responders after the for keyword will be ignored if you are using an Essentials subscription. So untested yet.)
