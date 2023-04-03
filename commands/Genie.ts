@@ -178,6 +178,26 @@ export class GennieCommand implements ISlashCommand {
                 let urlCall=url+ 'alerts/'+cmdParams[i]+'/assign?identifierType=tiny';
                 this.processPost('Alert '+cmdParams[i]+' Assigned to '+userEmails[0].address,apiIntegrationHeaders,urlCall,assigneePayload,http,context,modify,read,notifyOnly);
             }
+        } else if (subCmd === 'update') {
+            if(cmdParams.length<6){
+                return this.notifyMessage(context, modify, 'Update subcommand requires more arguments.');
+            }
+            if(cmdParams[1]!=='priority') {
+                return this.notifyMessage(context, modify, 'Update '+cmdParams[1]+' not implemented.');
+            }
+            if(cmdParams[2]!=='to') {
+                return this.notifyMessage(context, modify, 'Update priority has syntax: \`/genie update priority to [P1, P2, P3, P4 or P5] for [tinyID]\`');
+            }
+            let priority= cmdParams[3];
+            if(cmdParams[4]!=='for') {
+                return this.notifyMessage(context, modify, 'Update priority has syntax: \`/genie update priority to [P1, P2, P3, P4 or P5] for [tinyID]\`');
+            }
+            let alertId= cmdParams[5];
+            let priorityPayload = {
+                priority: priority
+            };
+            let urlCall=url+ 'alerts/'+alertId+'/priority?identifierType=tiny';
+            this.processPost('Alert Priority for '+alertId+' Set to '+priority,apiIntegrationHeaders,urlCall,priorityPayload,http,context,modify,read,notifyOnly);
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }

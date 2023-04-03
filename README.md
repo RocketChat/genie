@@ -41,6 +41,10 @@ It will assign the alert to the user.
 Take ownership of alert.
 (Pay attention this will be ignored if you are using an Essentials subscription. So untested yet.)
 
+## /genie update priority to [P1, P2, P3, P4 or P5] for [tinyID]
+
+Update priority of alert.
+
 ## /genie list
 
 Lists the open alerts.
