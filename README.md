@@ -23,6 +23,10 @@ Add note to alerts.
 
 Add tags to alerts.
 
+## /genie ackall
+
+Acknowledge all open alerts.
+
 ## /genie list
 
 Lists the open alerts.

@@ -44,8 +44,8 @@ export class GennieCommand implements ISlashCommand {
 
         if (subCmd === 'list' && cmdParams.length === 1) {
             //list open alerts
-            url = url + 'alerts?query=status%3Aopen&offset=0&limit=100&sort=createdAt&order=desc';
-            this.processGet('List Alerts',http, apiHeaders, url, context, modify, read, notifyOnly);
+            let response = await this.listOpenAlerts(http, apiHeaders, url);
+            this.processResponse('List Alerts',response, context, modify, read, notifyOnly);
         } else if (subCmd === 'list' && cmdParams[1] === 'teams') {
             //list teams
             url = url + 'teams';
@@ -135,11 +135,42 @@ export class GennieCommand implements ISlashCommand {
                 let newUrl = url + 'alerts/'+alertIds[i]+'/tags?identifierType=tiny';
                 this.processPost('Tags Added to Alert '+alertIds[i],apiIntegrationHeaders,newUrl,tagsPayload,http,context,modify,read,notifyOnly);
             }
+        } else if (subCmd === 'ackall') {
+            if(cmdParams.length>1){
+                return this.notifyMessage(context, modify, 'Ackall subcommand does not receive arguments.');
+            }
+            let response = await this.listOpenAlerts(http, apiHeaders, url);
+            if (response.statusCode != 200&&response.statusCode != 202) {
+                return await this.notifyMessage(context, modify, '*Error calling HTTP:*\n```\n' + response.content + "\n```");
+            }
+            let responseObj = JSON.parse(''+response.content);
+            for (let i=0;responseObj.data&&i<responseObj.data.length;i++) {
+                let alertObj=responseObj.data[i];
+                let urlCall=url+ 'alerts/'+alertObj.tinyId+'/acknowledge?identifierType=tiny';
+                this.processPost('Alert Aknowledged '+alertObj.tinyId,apiIntegrationHeaders,urlCall,{},http,context,modify,read,notifyOnly);
+            }
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
     }
+
+    async listOpenAlerts(http: IHttp, apiHeaders: any, baseUrl: string) {
+        return await http.get(baseUrl + 'alerts?query=status%3Aopen&offset=0&limit=100&sort=createdAt&order=desc', {
+            headers: apiHeaders
+        });
+    }
+
+
+
+    private async processGet(headLine: string,http: IHttp, apiHeaders: any, url: string, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
+        let response = await http.get(url, {
+            headers: apiHeaders
+        });
+        this.processResponse(headLine,response, context, modify, read, notifyOnly);
+    }
+
+
     async processPost(headLine: string,apiHeaders: any, url: string, payload: any, http: IHttp, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
         //console.log(url);
         //console.log(JSON.stringify(payload));
@@ -212,13 +243,6 @@ export class GennieCommand implements ISlashCommand {
 
     getAlertMsg(cmdParams: string[]) {
         return this.getMsgFromCmd(cmdParams,'for');
-    }
-
-    private async processGet(headLine: string,http: IHttp, apiHeaders: any, url: string, context: SlashCommandContext, modify: IModify, read: IRead, notifyOnly: any) {
-        let response = await http.get(url, {
-            headers: apiHeaders
-        });
-        this.processResponse(headLine,response, context, modify, read, notifyOnly);
     }
 
 
