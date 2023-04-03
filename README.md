@@ -63,6 +63,9 @@ Gets corresponding alert.
 
 Lists the open alerts.
 
+## /genie list integrations
+
+List integrations.
 
 ## /genie list teams
 

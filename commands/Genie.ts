@@ -50,6 +50,10 @@ export class GennieCommand implements ISlashCommand {
             //list teams
             url = url + 'teams';
             this.processGet('List Teams',http, apiHeaders, url, context, modify, read, notifyOnly);
+        } else if (subCmd === 'list' && cmdParams[1] === 'integrations') {
+            //list integrations
+            url = url + 'integrations';
+            this.processGet('List Integrations',http, apiHeaders, url, context, modify, read, notifyOnly);
         } else if (subCmd === 'get') {
             //get alert
             if (cmdParams.length === 1) {
