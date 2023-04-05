@@ -237,6 +237,22 @@ export class GennieCommand implements ISlashCommand {
             let urlCall =url+ integrationPolicy+'/'+intPolValue+'/enable';
             let payload ={};
             this.processPost('Enable '+cmdParams[1]+' '+intPolValue,apiIntegrationHeaders,urlCall,payload,http,context,modify,read,notifyOnly);
+        } else if (subCmd === 'disable') {
+            if(cmdParams.length<3){
+                return this.notifyMessage(context, modify, 'Disable integration/policy subcommand requires more arguments.');
+            }
+            let integrationPolicy=cmdParams[1];
+            if(integrationPolicy!=='policy'&&integrationPolicy!=='integration'){
+                return this.notifyMessage(context, modify, 'Disable integration/policy subcommand only accepts integration or policy as second argument.');
+            } else if(integrationPolicy=='policy'){
+                integrationPolicy= 'policies';
+            } else {
+                integrationPolicy= 'integrations';
+            }
+            let intPolValue=cmdParams[2];
+            let urlCall =url+ integrationPolicy+'/'+intPolValue+'/disable';
+            let payload ={};
+            this.processPost('Enable '+cmdParams[1]+' '+intPolValue,apiIntegrationHeaders,urlCall,payload,http,context,modify,read,notifyOnly);
         }    else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
