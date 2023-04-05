@@ -58,6 +58,10 @@ export class GennieCommand implements ISlashCommand {
             //list policies
             url = url + 'policies/alert';
             this.processGet('List Policies',http, apiHeaders, url, context, modify, read, notifyOnly);
+        } else if (subCmd === 'list' && cmdParams[1] === 'schedules') {
+            //list schedules
+            url = url + 'schedules';
+            this.processGet('List Schedules',http, apiIntegrationHeaders, url, context, modify, read, notifyOnly);
         } else if (subCmd === 'get') {
             //get alert
             if (cmdParams.length === 1) {
@@ -253,7 +257,7 @@ export class GennieCommand implements ISlashCommand {
             let urlCall =url+ integrationPolicy+'/'+intPolValue+'/disable';
             let payload ={};
             this.processPost('Enable '+cmdParams[1]+' '+intPolValue,apiIntegrationHeaders,urlCall,payload,http,context,modify,read,notifyOnly);
-        }    else {
+        } else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 

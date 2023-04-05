@@ -83,3 +83,7 @@ Enable Integration/Policy.
 
 Disable Integration/Policy.
 
+## /genie list schedules
+
+List all schedules.
+
