@@ -87,3 +87,7 @@ Disable Integration/Policy.
 
 List all schedules.
 
+## /genie whoisoncall [schedule id]
+
+Retrieves oncall user information for the schedule passed. Else for all schedules.
+

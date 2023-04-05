@@ -257,10 +257,37 @@ export class GennieCommand implements ISlashCommand {
             let urlCall =url+ integrationPolicy+'/'+intPolValue+'/disable';
             let payload ={};
             this.processPost('Enable '+cmdParams[1]+' '+intPolValue,apiIntegrationHeaders,urlCall,payload,http,context,modify,read,notifyOnly);
+        } else if (subCmd === 'whoisoncall') {
+            if(cmdParams.length>2){
+                return this.notifyMessage(context, modify, 'Whoisoncall subcommand doesnt accept so many arguments.');
+            } else if (cmdParams.length==1){
+                //all schedules
+                let response = await this.listSchedules(http, apiIntegrationHeaders, url);
+                if (response.statusCode != 200&&response.statusCode != 202) {
+                    return await this.notifyMessage(context, modify, '*Error calling HTTP:*\n```\n' + response.content + "\n```");
+                }
+                let responseObj = JSON.parse(''+response.content);
+                for (let i=0;responseObj.data&&i<responseObj.data.length;i++) {
+                    let scheduleObj=responseObj.data[i];
+                    let urlCall=url+ 'schedules/'+scheduleObj.id+'/on-calls';
+                    this.processGet('Who is on calls for '+scheduleObj.id,http, apiIntegrationHeaders, urlCall, context, modify, read, notifyOnly);
+                }
+            } else {
+                //single schedule
+                let scheduleId=cmdParams[1];
+                url =url+ 'schedules/'+scheduleId+'/on-calls';
+                this.processGet('Who is on calls for '+scheduleId,http, apiIntegrationHeaders, url, context, modify, read, notifyOnly);
+            }
         } else {
             this.notifyMessage(context, modify, 'Could not identify subcommand: `' + cmdParams.join(" ") + '`');
         }
 
+    }
+
+    async listSchedules(http: IHttp, apiIntegrationHeaders: any, baseUrl: string) {
+        return await http.get(baseUrl + 'schedules', {
+            headers: apiIntegrationHeaders
+        });
     }
 
     async listOpenAlerts(http: IHttp, apiHeaders: any, baseUrl: string) {
