@@ -1,10 +1,10 @@
 {
-    "opsgenie_api_key": "API Key",
-    "opsgenie_api_key_desc": "The API Key for Opsgenie integration",
+    "opsgenie_api_key": "API Key Management",
+    "opsgenie_api_key_desc": "The API Key for calling Opsgenie REST API.",
     "opsgenie_notify_only": "Notify Only",
     "opsgenie_notify_only_desc": "If disabled the message will be written to the channel",
-    "opsgenie_api_integration_key": "API Integration Key",
-    "opsgenie_api_integration_key_desc": "The API Integration Key for Opsgenie integration (required for creating alerts)",
+    "opsgenie_api_integration_key": "Team Integration API Key",
+    "opsgenie_api_integration_key_desc": "The API Integration Key for Alerts REST API.",
     "opsgenie_api_url": "Opsgenie API URL",
-    "opsgenie_api_url_desc": "Opsgenie API URL of the format https://api.opsgenie.com/v2/)"
+    "opsgenie_api_url_desc": "Opsgenie API URL of the format https://api.opsgenie.com/v2/. In general don't need to change."
 }

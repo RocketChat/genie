@@ -3,8 +3,8 @@ This extension app adds slash command genie to Rocket.Chat allowing to execute o
 
 It has 4 settings:
 - API URL: The URL for the Opsgenie API (default to Atlassian cloud one https://api.opsgenie.com/v2/)
-- API Key: The API Key for calling Opsgenie REST API.
-- API Integration Key: The API Integration Key for Alerts REST API.
+- API Key Management: The API Key for calling Opsgenie REST API.
+- Team Integration API Key: The API Integration Key for Alerts REST API.
 - Notify Only: In case you disable the responses are posted to the channel.
 
 ## /genie ack [tinyID tinyID2..]
