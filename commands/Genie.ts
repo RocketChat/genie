@@ -44,7 +44,7 @@ export class GennieCommand implements ISlashCommand {
         const subCmd = cmdParams[0];
 
         if (subCmd === 'list' && cmdParams.length === 1) {
-            //list open alerts
+            //list open alerts - the one with formatting per line
             let response = await this.listOpenAlerts(http, apiHeaders, url);
             if (response.statusCode != 200 && response.statusCode != 202) {
                 return await this.notifyMessage(context, modify, '*Error calling HTTP:*\n```\n' + response.content + "\n```");
