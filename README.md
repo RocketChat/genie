@@ -6,6 +6,7 @@ It has 4 settings:
 - API Key Management: The API Key for calling Opsgenie REST API.
 - Team Integration API Key: The API Integration Key for Alerts REST API.
 - Notify Only: In case you disable the responses are posted to the channel.
+- Opsgenie Domain: Your domain to be used for composing links.
 
 ## /genie ack [tinyID tinyID2..]
 

@@ -61,6 +61,17 @@ export class GenieApp extends App {
             i18nDescription: 'opsgenie_notify_only_desc',
         });
 
+        await configuration.settings.provideSetting({
+            id: 'opsgenie_domain',
+            type: SettingType.STRING,
+            packageValue: 'https://rjmfernandes2.app.opsgenie.com',
+            required: true,
+            public: false,
+            multiline: false,
+            i18nLabel: 'opsgenie_domain',
+            i18nDescription: 'opsgenie_domain_desc',
+        });
+
         const genieCommand: GennieCommand = new GennieCommand();
         await configuration.slashCommands.provideSlashCommand(genieCommand);
       }

@@ -6,5 +6,7 @@
     "opsgenie_api_integration_key": "Team Integration API Key",
     "opsgenie_api_integration_key_desc": "The API Integration Key for Alerts REST API.",
     "opsgenie_api_url": "Opsgenie API URL",
-    "opsgenie_api_url_desc": "Opsgenie API URL of the format https://api.opsgenie.com/v2/. In general don't need to change."
+    "opsgenie_api_url_desc": "Opsgenie API URL of the format https://api.opsgenie.com/v2/. In general don't need to change.",
+    "opsgenie_domain": "Opsgenie Domain",
+    "opsgenie_domain_desc": "Your Opsgenie domain (the one by default is just an example)."
 }
