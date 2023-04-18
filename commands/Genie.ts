@@ -45,7 +45,7 @@ export class GennieCommand implements ISlashCommand {
         if (subCmd === 'list' && cmdParams.length === 1) {
             //list open alerts
             let response = await this.listOpenAlerts(http, apiHeaders, url);
-            this.processResponse('Alert List',response, context, modify, read, notifyOnly);
+            this.processResponse('List Alerts',response, context, modify, read, notifyOnly);
         } else if (subCmd === 'list' && cmdParams[1] === 'teams') {
             //list teams
             url = url + 'teams';
@@ -408,8 +408,6 @@ export class GennieCommand implements ISlashCommand {
         if (response.statusCode != 200&&response.statusCode != 202) {
             return await this.notifyMessage(context, modify, '*Error calling HTTP:*\n```\n' + response.content + "\n```");
         }
-        let responseObject = response.content?JSON.parse(response.content):{ data: []};
-        headLine=headLine+' - Found '+responseObject.data.length+' open alerts';
         let responseMsg = this.formatMessage(headLine,response.content);
         if (notifyOnly) {
             this.notifyMessage(context, modify, responseMsg);
