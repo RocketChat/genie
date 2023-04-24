@@ -451,7 +451,7 @@ function getAlertListMessage(responseObject: any, domain: string) {
     let message = '';
     for (let i = 0; i < responseObject.data.length; i++) {
         let alert = responseObject.data[i];
-        let ackedMsg = alert.aknowledged ? 'acked' : 'unacked';
+        let ackedMsg = alert.acknowledged ? 'acked' : 'unacked';
         message = message + '- #' + alert.tinyId + ': ' + alert.message + ' [' + ackedMsg + '] - [View details](' + domain + '/alert/detail/' + alert.id + '/details).';
         if (i != responseObject.data.length - 1) {
             message = message + '\n';
